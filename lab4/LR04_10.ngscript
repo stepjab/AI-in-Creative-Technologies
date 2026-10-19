@@ -1,0 +1,68 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 5,
+  "metadata": {
+    "kernelspec": {
+      "display_name": "IJulia 1.9.3",
+      "language": "julia",
+      "name": "ijulia-1.9"
+    },
+    "language_info": {
+      "file_extension": ".jl",
+      "name": "julia",
+      "version": "1.9.3"
+    },
+    "engee": {}
+  },
+  "cells": [
+    {
+      "id": "8da95aa1",
+      "cell_type": "code",
+      "source": [
+        "# 1. Подключение библиотеки\ninclude(\"Павленко/LR04/lab04_lib.jl\")\n\n# 2. Создание чистой сцены (эталона) и зашумленной сцены 2 (шум 0.05) при seed 101\nclean = clean4(2)\nnoisy = make_gray4(101; scene4(2)...)\n\n# 3. Расчет PSNR зашумленной сцены относительно эталона\npsnr_base = psnr_db(noisy, clean)\nprintln(\"PSNR зашумленной сцены (факт): \", psnr_base, \" дБ\")\nprintln(\"PSNR по теории (-20*lg(0.05)): \", -20 * log10(0.05), \" дБ\")\n\n# 4. Применение нерезкой маски (операция 4)\nsharp = unsharp4(noisy)\npsnr_after = psnr_db(sharp, clean)\nprintln(\"PSNR после нерезкой маски:    \", psnr_after, \" дБ\")\nprintln(\"Разница ΔPSNR:                \", psnr_after - psnr_base, \" дБ\")\n\n# 5. Сохранение трех PNG для отчета\nsave(\"clean_ref.png\", Gray.(clean))\nsave(\"noisy_input.png\", Gray.(noisy))\nsave(\"sharp_output.png\", Gray.(sharp))\nprintln(\"Файлы clean_ref.png, noisy_input.png и sharp_output.png успешно сохранены!\")\n\n# 6. Полный статистический расчет варианта 10 по серии seed 101..105\nvariant_summary4(10)"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "PSNR зашумленной сцены (факт): 25.966945768061013 дБ\nPSNR по теории (-20*lg(0.05)): 26.020599913279625 дБ\n"
+        },
+        {
+          "output_type": "error",
+          "ename": "LoadError",
+          "evalue": "UndefVarError: `unsharp_mask` not defined in `Main`\nSuggestion: check for spelling errors or missing imports.",
+          "traceback": [
+            "UndefVarError: `unsharp_mask` not defined in `Main`\nSuggestion: check for spelling errors or missing imports.",
+            "",
+            "Stacktrace:",
+            " [1] top-level scope",
+            "   @ In[22]:14",
+            " [2] eval(m::Module, e::Any)",
+            "   @ Core ./boot.jl:489"
+          ]
+        }
+      ],
+      "metadata": {
+        "name": " ",
+        "engee": {
+          "isDisplay": true,
+          "isParagraph": false,
+          "isClosedParagraph": false,
+          "amountHideCellsInside": 0,
+          "codeOutputView": "col",
+          "codeOutputHidden": false,
+          "outputInfo": {
+            "isExpanded": false,
+            "scrollTop": 0
+          },
+          "maskInfo": {
+            "isMaskVisible": true,
+            "isEditorVisible": true,
+            "isAutoplayActive": false
+          }
+        }
+      }
+    }
+  ]
+}
