@@ -1,0 +1,211 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 5,
+  "metadata": {
+    "kernelspec": {
+      "display_name": "IJulia 1.9.3",
+      "language": "julia",
+      "name": "ijulia-1.9"
+    },
+    "language_info": {
+      "file_extension": ".jl",
+      "name": "julia",
+      "version": "1.9.3"
+    },
+    "engee": {}
+  },
+  "cells": [
+    {
+      "id": "389e14f4",
+      "cell_type": "code",
+      "source": [
+        "include(\"Павленко/LR03/lab03_lib.jl\")"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": "variant_summary (generic function with 1 method)"
+          },
+          "metadata": {},
+          "execution_count": 16
+        }
+      ],
+      "metadata": {
+        "name": " ",
+        "engee": {
+          "isDisplay": true,
+          "isParagraph": false,
+          "isClosedParagraph": false,
+          "amountHideCellsInside": 0,
+          "codeOutputView": "col",
+          "codeOutputHidden": false,
+          "outputInfo": {
+            "isExpanded": false,
+            "scrollTop": 0
+          },
+          "maskInfo": {
+            "isMaskVisible": true,
+            "isEditorVisible": true,
+            "isAutoplayActive": false
+          }
+        }
+      }
+    },
+    {
+      "id": "44c2ad27",
+      "cell_type": "code",
+      "source": [
+        "# Создаем сцену 2 (низкий контраст) при seed 101\nscene = make_scene(101; lo=0.40, hi=0.60)\ndescribe_image(scene)"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": "(size = (128, 128), eltype = \"RGB{Float64}\", min = 0.3311562226432249, max = 0.6685814096363565, bytes = 393216)"
+          },
+          "metadata": {},
+          "execution_count": 17
+        }
+      ],
+      "metadata": {
+        "name": "Section name",
+        "engee": {
+          "isDisplay": true,
+          "isParagraph": false,
+          "isClosedParagraph": false,
+          "amountHideCellsInside": 0,
+          "codeOutputView": "col",
+          "codeOutputHidden": false,
+          "outputInfo": {
+            "isExpanded": false,
+            "scrollTop": 0
+          },
+          "maskInfo": {
+            "isMaskVisible": true,
+            "isEditorVisible": true,
+            "isAutoplayActive": false
+          }
+        }
+      }
+    },
+    {
+      "id": "b5e918ca",
+      "cell_type": "code",
+      "source": [
+        "variant_summary(10)"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": "(variant = 10, ctx = 2, fac = 4, psnr = 17.179301924124083, rows = Any[(:mean, 0.4919658476107546, 8.388562082373828e-5, 0.5368305979815997, 0.044864750370845086, 534.8324293279722, true), (:contrast, 0.022426192324705635, 0.00014979314506126002, 0.1530089531671192, 0.13058276084241358, 871.7539163024444, true), (:entropy, 1.6542345757698247, 0.006208479477248238, 4.29760271873438, 2.6433681429645555, 425.76739645375557, true)])"
+          },
+          "metadata": {},
+          "execution_count": 18
+        }
+      ],
+      "metadata": {
+        "name": "Section name",
+        "engee": {
+          "isDisplay": true,
+          "isParagraph": false,
+          "isClosedParagraph": false,
+          "amountHideCellsInside": 0,
+          "codeOutputView": "col",
+          "codeOutputHidden": false,
+          "outputInfo": {
+            "isExpanded": false,
+            "scrollTop": 0
+          },
+          "maskInfo": {
+            "isMaskVisible": true,
+            "isEditorVisible": true,
+            "isAutoplayActive": false
+          }
+        }
+      }
+    },
+    {
+      "id": "bad85227",
+      "cell_type": "code",
+      "source": [
+        "# Описание сцены варианта 10\nprintln(\"\\n--- ОПИСАНИЕ СЦЕНЫ ---\")\nscene = make_scene(101; lo=0.40, hi=0.60)\ndescribe_image(scene)"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "\n--- ОПИСАНИЕ СЦЕНЫ ---\n"
+        },
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": "(size = (128, 128), eltype = \"RGB{Float64}\", min = 0.3311562226432249, max = 0.6685814096363565, bytes = 393216)"
+          },
+          "metadata": {},
+          "execution_count": 19
+        }
+      ],
+      "metadata": {
+        "name": "Section name",
+        "engee": {
+          "isDisplay": true,
+          "isParagraph": false,
+          "isClosedParagraph": false,
+          "amountHideCellsInside": 0,
+          "codeOutputView": "col",
+          "codeOutputHidden": false,
+          "outputInfo": {
+            "isExpanded": false,
+            "scrollTop": 0
+          },
+          "maskInfo": {
+            "isMaskVisible": true,
+            "isEditorVisible": true,
+            "isAutoplayActive": false
+          }
+        }
+      }
+    },
+    {
+      "id": "2a0e9f1e",
+      "cell_type": "code",
+      "source": [
+        "# 1. Сравнение способов вычисления яркости\nscene = make_scene(101; scene_preset(2)...)\ng_man = luma_manual(scene)\ng_img = luma_images(scene)\nmax_diff = maximum(abs.(g_man .- g_img))\nprintln(\"1. Максимальная разность способов luma: \", max_diff)\n\n# 2. Воспроизводимость SHA-256\nsha_1 = array_sha(g_img)\nsha_2 = array_sha(luma_images(make_scene(101; scene_preset(2)...)))\nprintln(\"2. SHA-256 (seed 101): \", sha_1[1:16])\nprintln(\"   Повторный запуск:    \", sha_2[1:16])\nprintln(\"   Детерминизм подтвержден: \", sha_1 == sha_2)\n\n# 3. Сохранение изображений и графика гистограмм\nusing Plots\ng_factor = apply_factor(g_img, 4)\n\nsave(\"scene_base.png\", Gray.(g_img))\nsave(\"scene_factor.png\", Gray.(g_factor))\n\np = plot(\n    bar(1:32, hist_counts(g_img, 32), label=\"До растяжения (база)\", color=:steelblue, alpha=0.8),\n    bar(1:32, hist_counts(g_factor, 32), label=\"После растяжения (фактор)\", color=:crimson, alpha=0.8),\n    layout=(2, 1),\n    size=(700, 500),\n    title=[\"Гистограмма до воздействия (узкий диапазон)\" \"Гистограмма после линейного растяжения\"],\n    xlabel=\"Интервал яркости (1..32)\",\n    ylabel=\"Число пикселей\"\n)\nsavefig(p, \"histograms.png\")\nprintln(\"3. Файлы scene_base.png, scene_factor.png и histograms.png успешно созданы!\")"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "1. Максимальная разность способов luma: 6.019111098432006e-9\n2. SHA-256 (seed 101): 855526fd63358f26\n   Повторный запуск:    855526fd63358f26\n   Детерминизм подтвержден: true\n3. Файлы scene_base.png, scene_factor.png и histograms.png успешно созданы!\n"
+        }
+      ],
+      "metadata": {
+        "name": "Section name",
+        "engee": {
+          "isDisplay": true,
+          "isParagraph": false,
+          "isClosedParagraph": false,
+          "amountHideCellsInside": 0,
+          "codeOutputView": "col",
+          "codeOutputHidden": false,
+          "outputInfo": {
+            "isExpanded": false,
+            "scrollTop": 0
+          },
+          "maskInfo": {
+            "isMaskVisible": true,
+            "isEditorVisible": true,
+            "isAutoplayActive": false
+          }
+        }
+      }
+    }
+  ]
+}
